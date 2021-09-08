@@ -14,15 +14,15 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 //create a connection to the database
 
-const db = new sqlDriver('../db/sqlite3-demo.db');
+const db = new sqlDriver('../db/products.db');
 
 //makes som REST routes
 
-app.get('/api/products', (req, res) => {
+app.get('api/mobiles', (req, res) => {
 //create a db query as a prepared statement
     let stmt = db.prepare(`
 SELECT *
- FROM products
+ FROM mobiles
  `);
  //run the query and return all the data
  let result = stmt.all();
