@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { NavLink, Switch, Route, BrowserRouter } from 'react-router-dom';
 import Home from './componentes/Home';
 import Mobiles from './componentes/Mobiles';
-import Carrito from './componentes/Carrito';
+// import Carrito from './componentes/Carrito';
 import Headphones from './componentes/Headphones';
 import Laptops from './componentes/Laptops';
 import Checkout from './componentes/Checkout';
