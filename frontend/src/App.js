@@ -126,10 +126,10 @@ const App = () => {
                         
                     </Switch>
                 </main>
-                {hide ?
+                {/* {hide ?
                     null : <aside>
                         <Carrito carrito={carrito} hideCart={hideCart} />
-                    </aside>}
+                    </aside>} */}
             </Container>
         </BrowserRouter>
     );
