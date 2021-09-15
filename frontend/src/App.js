@@ -1,39 +1,37 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { NavLink, Switch, Route, BrowserRouter } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import Home from './componentes/Home';
 import Mobiles from './componentes/Mobiles';
-// import Carrito from './componentes/Carrito';
 import Headphones from './componentes/Headphones';
 import Laptops from './componentes/Laptops';
 import Checkout from './componentes/Checkout';
 import Login from './componentes/Login';
 import Register from './componentes/Register';
-
+import Menubar from './componentes/Menu';    
+import Footer from './componentes/Footer';
 const App = () => {
 
-    const [hide, setHide] = useState(false)
-    const productos = [
-        { id: 1, nombre: 'Producto 1' },
-        { id: 2, nombre: 'Producto 2' },
-        { id: 3, nombre: 'Producto 3' },
-        { id: 4, nombre: 'Producto 4' }
-    ];
+    const [count, setCount] = useState(0);
+    const [carrito, cambiarCarrito] = useState([]);
 
-    const hideCart = () => {
-        setHide(true)
+    //update count productos
+    useEffect(() => {
+        contar(carrito);
+    }, [carrito])
+
+    //to acumm cantidad of product inside carrito 
+    const contar = (data) => {  
+        setCount( 
+            data.reduce(
+                (prevValue, currentValue) => prevValue + currentValue.cantidad,
+                0
+            )
+        )    
     }
-    const unHideCart = () => {
-        setHide(false)
-    }
+
     const clearCart = () => {
         cambiarCarrito([])
     }
-    const [carrito, cambiarCarrito] = useState([]);
-    // [
-    //     {id: 1s, nombre: 'Producto 1ss', cantidadj: 1},
-    //     {id: 2, nombre: 'Producto 2', cantidad: 2}
-    // ]
 
     const agregarProductoAlCarrito = (idProductoAAgregar, nombre, price, type) => {
         // Si el carrito no tiene elementos entonces agregamos uno.
@@ -80,7 +78,6 @@ const App = () => {
                     }
                 );
             }
-
             // Por ultimo actualizamos el carrito.
             cambiarCarrito(nuevoCarrito);
         }
@@ -92,78 +89,34 @@ const App = () => {
     }
 
     return (
-
-        <BrowserRouter>
-            
-                <Menu >
-                    <NavLink to="/" onClick={hideCart}>Home</NavLink>
-                    <NavLink to="/mobiles" onClick={unHideCart}>Mobiles</NavLink>
-                    <NavLink to="/headphones" onClick={unHideCart}> Headphones</NavLink>
-                    <NavLink to="/laptops" onClick={unHideCart}> Laptops</NavLink>
-                    <NavLink to="/checkout" onClick={hideCart}> <img src={process.env.PUBLIC_URL + `/Assets/shopping-cart.png`} width='30' /></NavLink>
-                    <NavLink to="/login" onClick={hideCart}> <img src={process.env.PUBLIC_URL + `/Assets/login.png`} width='30' /></NavLink>
-                </Menu>
-                <Container>
-                <main>
+        <>
+            <BrowserRouter>        
+                <Menubar count={count}  />
+                <div className="container mb-5" style={{ height:"100%" }}>
                     <Switch>
                         <Route path="/" exact={true} component={Home} />
                         <Route path="/mobiles">
-                            <Mobiles agregarProductoAlCarrito={agregarProductoAlCarrito} />
+                            <Mobiles carrito={carrito}  agregarProductoAlCarrito={agregarProductoAlCarrito} />
                         </Route>
                         <Route path="/headphones">
-                            <Headphones agregarProductoAlCarrito={agregarProductoAlCarrito} />
+                            <Headphones carrito={carrito}  agregarProductoAlCarrito={agregarProductoAlCarrito} />
                         </Route>
                         <Route path="/laptops">
-                            <Laptops agregarProductoAlCarrito={agregarProductoAlCarrito} />
-                        </Route>
-                    
+                            <Laptops carrito={carrito}  agregarProductoAlCarrito={agregarProductoAlCarrito} />
+                        </Route>                
                         <Route path="/checkout">
                             <Checkout carrito={carrito} removeItemFromCart={removeItemFromCart} clearCart={clearCart} />
                         </Route>
                         <Route path="/login" exact={true} component={Login} />
                         <Route path="/register" exact={true} component={Register} />
-
-                        
-                    </Switch>
-                </main>
-                {/* {hide ?
-                    null : <aside>
-                        <Carrito carrito={carrito} hideCart={hideCart} />
-                    </aside>} */}
-            </Container>
-        </BrowserRouter>
+                    </Switch>               
+                </div>
+            </BrowserRouter>
+            <div style={{ position:"fixed", left:"0", bottom:"0", right:"0", height: "auto" }}>
+                <Footer  />
+            </div>
+        </>
     );
 }
-
-const Container = styled.div`
-    max-width: 100%;
-    padding: 20px 40px;
-    width: 100%;
-    display: grid;
-    gap: 20px;
-    grid-template-columns: 2fr 1fr;
-    background: #fff;   
-    border-radius: 10px;
-    box-shadow: 0px 0px 5px rgba(129, 129, 129, 0.1);
-`;
-
-const Menu = styled.nav`
-    width: 100%;
-    text-align: center;
-    background:#7FFFD4;
-    grid-column: span 2;
-    border-radius: 3px;
- 
-    a {
-        color: #fff;
-        display: inline-block;
-        padding: 15px 60px;
-    }
- 
-    a:hover {
-        background: #1d85e8;
-        text-decoration: none;
-    }
-`;
 
 export default App;

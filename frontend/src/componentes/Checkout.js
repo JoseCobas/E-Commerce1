@@ -6,7 +6,7 @@ const Checkout = ({ carrito, removeItemFromCart, clearCart }) => {
     let totalAmount = amount?.reduce((a, b) => a + b, 0)
 
     return (
-        <div>
+        <div className="card p-4 mt-5 pt-4 mb-5 rounded" style={{minWidth:"460px"}}>
             {carrito.length ? <table style={{ width: '100%' }}>
                 <thead>
                     <tr>
@@ -18,11 +18,11 @@ const Checkout = ({ carrito, removeItemFromCart, clearCart }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {carrito?.map(producto => {
+                    {carrito?.map( (producto, index) => {
                         return (
                             <>
-                                <tr>
-                                    <td><img src={process.env.PUBLIC_URL + `/Assets/${producto.type}/${producto.nombre}.jpg`} width='100' /></td>
+                                <tr key="index">
+                                    <td><img src={process.env.PUBLIC_URL + `/Assets/${producto.type}/${producto.nombre}.jpg`} width='100' alt="logos" className="img-fluid py-2" /></td>
                                     <td>{producto.nombre}</td>
                                     <td>{producto.cantidad}</td>
                                     <td>{producto.price}</td>
@@ -34,22 +34,24 @@ const Checkout = ({ carrito, removeItemFromCart, clearCart }) => {
                 </tbody>
             </table> : <h4>Nothing in cart! Please Add some items</h4>}
 
-            {carrito.length ? <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+            {carrito.length ? 
+                <div  className="mx-auto">
                 <div>
                 Price: {totalAmount - ((totalAmount * 25) / 100)+ ' kr'}
                     
                 </div>
                 <div>
                 Incl moms: {totalAmount + ' kr'}
-                   
+                
                 </div>
-                <div>
-                    <button style={{ backgroundColor: 'black', color: 'white' }} onClick={() => {
+                <div className="text-center mx-auto">
+                    <button className="p-1 rounded" style={{ backgroundColor: 'black', color: 'white' }} onClick={() => {
                         alert('Thanks for the Shopping')
                         clearCart()
                     }}>Checkout</button>
                 </div>
-            </div> : null}
+                </div>
+            : null}
 
         </div >
     );
