@@ -53,7 +53,7 @@ const App = () => {
     const agregarProductoAlCarrito = (idProductoAAgregar, nombre, price, type) => {
         // Si el carrito no tiene elementos entonces agregamos uno.
         if (carrito.length === 0) {
-            cambiarCarrito([{ id: idProductoAAgregar, nombre: nombre, price: price, type: type, cantidad: 1 }]);
+            cambiarCarrito([{ id_type: idProductoAAgregar, nombre: nombre, price: price, type: type, cantidad: 1 }]);
         } else {
             // De otra foma tenemos que revisar que el carrito no tenga ya el producto que queremos agregar.
             // Si ya lo tiene entonces queremos actualizar su valor.
@@ -64,7 +64,7 @@ const App = () => {
 
             // Comprobamos si el carrito ya tiene el ID del producto a agregar.
             const yaEstaEnCarrito = nuevoCarrito.filter((productoDeCarrito) => {
-                return productoDeCarrito.id === idProductoAAgregar
+                return productoDeCarrito.id_type === type
             }).length > 0;
 
             // Si ya tiene el producto entonces lo tenemos que actualizar.
@@ -72,10 +72,10 @@ const App = () => {
                 // Para ello tenemos que buscarlo, obtener su posicion en el arreglo.
                 // Y en base a su posicion ya actualizamos el valor.
                 nuevoCarrito.forEach((productoDeCarrito, index) => {
-                    if (productoDeCarrito.id === idProductoAAgregar) {
+                    if (productoDeCarrito.type === type) {
                         const cantidad = nuevoCarrito[index].cantidad;
                         nuevoCarrito[index] = {
-                            id: idProductoAAgregar,
+                            id_type: idProductoAAgregar,
                             nombre: nombre,
                             price: price * (cantidad + 1),
                             type: type,
@@ -87,7 +87,7 @@ const App = () => {
             } else {
                 nuevoCarrito.push(
                     {
-                        id: idProductoAAgregar,
+                        id_type: idProductoAAgregar,
                         nombre: nombre,
                         price: price,
                         type: type,
@@ -103,7 +103,7 @@ const App = () => {
     const agregarProductoAlCarritoFav = (idProductoAAgregar, nombre, price, type) => {
         // Si el carrito no tiene elementos entonces agregamos uno.
         if (carritoFav.length === 0) {
-            cambiarCarritoFav([{ id: idProductoAAgregar, nombre: nombre, price: price, type: type, cantidad: 1 }]);
+            cambiarCarritoFav([{ id_type: idProductoAAgregar, nombre: nombre, price: price, type: type, cantidad: 1 }]);
         } else {
             // De otra foma tenemos que revisar que el carrito no tenga ya el producto que queremos agregar.
             // Si ya lo tiene entonces queremos actualizar su valor.
@@ -114,7 +114,7 @@ const App = () => {
 
             // Comprobamos si el carrito ya tiene el ID del producto a agregar.
             const yaEstaEnCarritoFav = nuevoCarritoFav.filter((productoDeCarritoFav) => {
-                return productoDeCarritoFav.id === idProductoAAgregar
+                return productoDeCarritoFav.id === type
             }).length > 0;
 
             // Si ya tiene el producto entonces lo tenemos que actualizar.
@@ -122,10 +122,10 @@ const App = () => {
                 // Para ello tenemos que buscarlo, obtener su posicion en el arreglo.
                 // Y en base a su posicion ya actualizamos el valor.
                 nuevoCarritoFav.forEach((productoDeCarritoFav, index) => {
-                    if (productoDeCarritoFav.id === idProductoAAgregar) {
+                    if (productoDeCarritoFav.type === type) {
                         const cantidad = nuevoCarritoFav[index].cantidad;
                         nuevoCarritoFav[index] = {
-                            id: idProductoAAgregar,
+                            id_type: idProductoAAgregar,
                             nombre: nombre,
                             price: price * (cantidad + 1),
                             type: type,
@@ -137,7 +137,7 @@ const App = () => {
             } else {
                 nuevoCarritoFav.push(
                     {
-                        id: idProductoAAgregar,
+                        id_type: idProductoAAgregar,
                         nombre: nombre,
                         price: price,
                         type: type,
