@@ -28,7 +28,7 @@ const Register = (props) => {
 
 	function register(data) {
 		try {
-			fetch("http://localhost:4000/api/register", {
+			fetch("/api/register", {
 
 				// Adding method type
 				method: "POST",

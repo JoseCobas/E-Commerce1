@@ -9,7 +9,7 @@ const Mobiles = ({agregarProductoAlCarrito, agregarProductoAlCarritoFav, removeI
 	useEffect(() => {
 		async function getMobiles() {
 			try {
-				let response = await simpleFetch('http://localhost:4000/api/mobiles')
+				let response = await simpleFetch('/api/mobiles')
 				if (response) {
 					setMobiles(response)
 				}

@@ -10,7 +10,7 @@ const Headphones = ({agregarProductoAlCarrito,agregarProductoAlCarritoFav, remov
 	useEffect(() => {
 		async function getHeadphones() {
 			try {
-				let response = await simpleFetch('http://localhost:4000/api/headphones')
+				let response = await simpleFetch('/api/headphones')
 				if (response) {
 					setHeadphones(response)
 				}

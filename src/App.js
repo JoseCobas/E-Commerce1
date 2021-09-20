@@ -27,7 +27,7 @@ const App = () => {
 
     async function getCart() {
         try {
-            let response = await simpleFetch('http://localhost:4000/api/cart/' + user)
+            let response = await simpleFetch('/api/cart/' + user)
             if (response) {
                 setCart(response)
                 let names = response.map(a => a.name)
@@ -39,7 +39,7 @@ const App = () => {
     }
     async function getFavourites() {
         try {
-            let response = await simpleFetch('http://localhost:4000/api/favourites/' + user)
+            let response = await simpleFetch('/api/favourites/' + user)
             if (response) {
                 setFavourites(response)
                 let names = response.map(a => a.name)
@@ -83,7 +83,7 @@ const App = () => {
     }
     async function addToCart(data) {
         try {
-            let result = await (await fetch("http://localhost:4000/api/addToCart", {
+            let result = await (await fetch("/api/addToCart", {
 
             // Adding method type
             method: "POST",
@@ -106,7 +106,7 @@ const App = () => {
         }
     }
     async function addToFavourites(data) {
-        let result = await (await fetch("http://localhost:4000/api/addToFavourites", {
+        let result = await (await fetch("/api/addToFavourites", {
 
             // Adding method type
             method: "POST",
@@ -146,7 +146,7 @@ const App = () => {
 
     async function removeFromCart(id) {
 
-        let result = await (await fetch("http://localhost:4000/api/removeFromCart/" + id, {
+        let result = await (await fetch("/api/removeFromCart/" + id, {
 
             // Adding method type
             method: "DELETE",
@@ -164,7 +164,7 @@ const App = () => {
     }
     async function emptyCart(email) {
 
-        let result = await (await fetch("http://localhost:4000/api/emptyCart/" + email, {
+        let result = await (await fetch("/api/emptyCart/" + email, {
             // Adding method type
             method: "DELETE",
             // Adding headers to the request
@@ -180,7 +180,7 @@ const App = () => {
     }
     async function removeFromFavourites(id) {
 
-        let result = await (await fetch("http://localhost:4000/api/removeFromFavourites/" + id, {
+        let result = await (await fetch("/api/removeFromFavourites/" + id, {
 
             // Adding method type
             method: "DELETE",
@@ -198,7 +198,7 @@ const App = () => {
     }
     async function emptyFavourites(email) {
 
-        let result = await (await fetch("http://localhost:4000/api/emptyFavourites/" + email, {
+        let result = await (await fetch("/api/emptyFavourites/" + email, {
 
             // Adding method type
             method: "DELETE",
@@ -268,7 +268,7 @@ const App = () => {
     async function updateQuantity(id, quantity) {
 
 
-        let result = await (await fetch(`http://localhost:4000/api/updateQuantity/${id}/${quantity}`, {
+        let result = await (await fetch(`/api/updateQuantity/${id}/${quantity}`, {
 
             // Adding method type
             method: "PUT",

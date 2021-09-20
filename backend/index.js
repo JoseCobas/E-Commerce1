@@ -1,30 +1,36 @@
 const path = require('path');
 const express = require('express');
 const sqlDriver = require('better-sqlite3');
-const cors = require('cors');
+// const cors = require('cors');
 const { request } = require('http');
 const { response } = require('express');
-var bodyParser = require('body-parser')
-// create application/json parser
-var jsonParser = bodyParser.json()
+const bodyParser = require('body-parser')
 
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: true })
+// create application/json parser
+// var jsonParser = bodyParser.json()
+
+// // create application/x-www-form-urlencoded parser
+// var urlencodedParser = express.urlencoded({ extended: true })
 
 // create a new web server
 const app = express();
+app.use(express.json())
 
-app.use(bodyParser.urlencoded({
-  extended: true
+app.use(express.urlencoded({
+    extended: true
 }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({
+//   extended: true
+// }));
+// app.use(bodyParser.json());
 
-//habilita el acceso a la data desde cualquier sitio
-app.use(cors());
-app.options('*', cors());
+// //habilita el acceso a la data desde cualquier sitio
+// app.use(cors());
+// app.options('*', cors());
 
 // ask the web server to serve files from the frontend files
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname, '../src')));
+console.log(path.join(__dirname, '../src'));
 
 // create a connection to the database
 const db = new sqlDriver('../db/products.db');
@@ -61,7 +67,7 @@ app.get('/api/headphones', (req, res) => {
   // run the query and return all the data
   let result = stmt.all();
   console.log(result)
-
+  
   // send the result to the client as json
   res.json(result);
 });
@@ -91,7 +97,7 @@ app.get('/api/favourites/:email', (req, res) => {
   res.json(result);
 });
 
-app.put('/api/updateFavourites', urlencodedParser, (req, res) => {
+app.put('/api/updateFavourites', (req, res) => {
   let query = db.prepare(`
   UPDATE :type
    SET 
@@ -103,7 +109,7 @@ app.put('/api/updateFavourites', urlencodedParser, (req, res) => {
   res.json(query.all(req.body).length ? true : false);
 });
 
-app.put('/api/updateQuantity/:id/:quantity', urlencodedParser, (req, res) => {
+app.put('/api/updateQuantity/:id/:quantity', (req, res) => {
   let query = db.prepare(`
   UPDATE cart
    SET 
@@ -116,7 +122,7 @@ app.put('/api/updateQuantity/:id/:quantity', urlencodedParser, (req, res) => {
   res.json(query.run({ id: req.params.id, quantity: req.params.quantity }))
 });
 
-app.post('/api/addToCart', urlencodedParser, (req, res) => {
+app.post('/api/addToCart', (req, res) => {
   let query = db.prepare(`
   INSERT INTO cart (
     id,
@@ -138,7 +144,7 @@ VALUES (
 
   res.json(query.run(req.body));
 });
-app.post('/api/addToFavourites', urlencodedParser, (req, res) => {
+app.post('/api/addToFavourites', (req, res) => {
   let query = db.prepare(`
   INSERT INTO favourites (
     id,
@@ -158,7 +164,7 @@ VALUES (
 
   res.json(query.run(req.body));
 });
-app.delete('/api/removeFromFavourites/:id', urlencodedParser, (req, res) => {
+app.delete('/api/removeFromFavourites/:id',(req, res) => {
   let stmt = db.prepare(`
   DELETE FROM favourites
       WHERE id = :id
@@ -166,7 +172,7 @@ app.delete('/api/removeFromFavourites/:id', urlencodedParser, (req, res) => {
 
   res.json(stmt.run({ id: req.params.id }));
 });
-app.delete('/api/removeFromCart/:id', urlencodedParser, (req, res) => {
+app.delete('/api/removeFromCart/:id', (req, res) => {
   let stmt = db.prepare(`
   DELETE FROM cart
       WHERE id = :id
@@ -175,7 +181,7 @@ app.delete('/api/removeFromCart/:id', urlencodedParser, (req, res) => {
   res.json(stmt.run({ id: req.params.id }));
 });
 
-app.post('/api/login', urlencodedParser, (req, res) => {
+app.post('/api/login', (req, res) => {
   let query = db.prepare(`
   SELECT
        *
@@ -187,7 +193,7 @@ app.post('/api/login', urlencodedParser, (req, res) => {
   res.json(query.all(req.body).length ? { data: req.body.email } : false);
 });
 
-app.post('/api/register', urlencodedParser, (req, res) => {
+app.post('/api/register', (req, res) => {
   console.log(req.body)
   var user = req.body;
 

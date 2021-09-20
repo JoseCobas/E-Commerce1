@@ -37,7 +37,7 @@ const history = useHistory()
 
 	async function login(data) {
 		
-			let result = await(await fetch("http://localhost:4000/api/login", {
+			let result = await(await fetch("/api/login", {
 
 				// Adding method type
 				method: "POST",

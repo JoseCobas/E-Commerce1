@@ -7,7 +7,7 @@ const Laptops = ({agregarProductoAlCarrito, agregarProductoAlCarritoFav, removeI
 	useEffect(() => {
 		async function getLaptops() {
 			try {
-				let response = await simpleFetch('http://localhost:4000/api/laptops')
+				let response = await simpleFetch('/api/laptops')
 				if (response) {
 					setLaptops(response)
 				}
