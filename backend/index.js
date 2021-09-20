@@ -10,13 +10,13 @@ const bodyParser = require('body-parser')
 // var jsonParser = bodyParser.json()
 
 // // create application/x-www-form-urlencoded parser
-// var urlencodedParser = express.urlencoded({ extended: true })
+ var urlencodedParser = bodyParser.urlencoded({ extended: true })
 
 // create a new web server
 const app = express();
-app.use(express.json())
+app.use(bodyParser.json())
 
-app.use(express.urlencoded({
+app.use(bodyParser.urlencoded({
     extended: true
 }));
 // app.use(bodyParser.urlencoded({
@@ -36,7 +36,7 @@ console.log(path.join(__dirname, '../src'));
 const db = new sqlDriver('../db/products.db');
 
 // make some REST routes
-app.get('/api/mobiles', (req, res) => {
+app.get('/api/mobiles',  (req, res) => {
   // create a db query as a prepared statement
   let stmt = db.prepare(`
     SELECT *
