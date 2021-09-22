@@ -10,14 +10,14 @@ const bodyParser = require('body-parser')
 // var jsonParser = bodyParser.json()
 
 // // create application/x-www-form-urlencoded parser
- var urlencodedParser = bodyParser.urlencoded({ extended: true })
+var urlencodedParser = bodyParser.urlencoded({ extended: true })
 
 // create a new web server
 const app = express();
 app.use(bodyParser.json())
 
 app.use(bodyParser.urlencoded({
-    extended: true
+  extended: true
 }));
 // app.use(bodyParser.urlencoded({
 //   extended: true
@@ -30,13 +30,22 @@ app.use(bodyParser.urlencoded({
 
 // ask the web server to serve files from the frontend files
 app.use(express.static(path.join(__dirname, '../src')));
+
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, PATCH, POST, DELETE');
+  res.header('Access-Control-Allow-Headers', 
+  req.header('access-control-request-headers'));
+  next();
+});
 console.log(path.join(__dirname, '../src'));
 
 // create a connection to the database
 const db = new sqlDriver('../db/products.db');
 
 // make some REST routes
-app.get('/api/mobiles',  (req, res) => {
+app.get('/api/mobiles', (req, res) => {
   // create a db query as a prepared statement
   let stmt = db.prepare(`
     SELECT *
@@ -67,7 +76,7 @@ app.get('/api/headphones', (req, res) => {
   // run the query and return all the data
   let result = stmt.all();
   console.log(result)
-  
+
   // send the result to the client as json
   res.json(result);
 });
@@ -79,9 +88,9 @@ app.get('/api/cart/:email', (req, res) => {
   FROM cart WHERE email = :email
   `);
   // run the query and return all the data
- // res.json(stmt.run({ email: req.params.id }));
- let result = stmt.all({ email: req.params.email });
- res.json(result);
+  // res.json(stmt.run({ email: req.params.id }));
+  let result = stmt.all({ email: req.params.email });
+  res.json(result);
 });
 app.get('/api/favourites/:email', (req, res) => {
   // create a db query as a prepared statement
@@ -164,7 +173,7 @@ VALUES (
 
   res.json(query.run(req.body));
 });
-app.delete('/api/removeFromFavourites/:id',(req, res) => {
+app.delete('/api/removeFromFavourites/:id', (req, res) => {
   let stmt = db.prepare(`
   DELETE FROM favourites
       WHERE id = :id
